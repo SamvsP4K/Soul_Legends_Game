@@ -22,7 +22,7 @@ class Level:
                 if col == "x":
                     Tile((x,y),[self.visible_sprits,self.obstacle_sprits])
                 if col == "p":
-                    Player((x,y),[self.visible_sprits])
+                    self.player = Player((x,y),[self.visible_sprits])
 
             #print(row_index)
             #print(row)
@@ -31,3 +31,4 @@ class Level:
     def run(self):
         #update and draw game
         self.visible_sprits.draw(self.display_surface)
+        self.visible_sprits.update()
