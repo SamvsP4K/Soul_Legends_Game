@@ -21,8 +21,8 @@ class Level:
     def create_map(self):
         layout ={
             "boundary":import_csv_layout("map/map_FloorBlocks.csv")
-
         }
+        
         for style, layout in layout.items():
             for row_index,row in enumerate(layout):
                 for col_index, col in enumerate(row):
