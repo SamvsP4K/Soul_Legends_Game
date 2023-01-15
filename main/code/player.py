@@ -11,6 +11,8 @@ class Player(pygame.sprite.Sprite):
         #graphics setup and retreving player status for animation
         self.import_player_assets()
         self.status = "down"
+        self.frame_index = 0
+        self.animation_speed = 0.15
 
         #adding player hitbox
         self.hitbox = self.rect.inflate(0,-26)
@@ -63,7 +65,7 @@ class Player(pygame.sprite.Sprite):
             self.attack_time = pygame.time.get_ticks()
             print("attack")
         #magic input
-        if keys[pygame.K_r] and not self.attacking:
+        if keys[pygame.K_r]  and not self.attacking:
             self.attacking = True
             self.attack_time = pygame.time.get_ticks()
             print("magic")
@@ -83,7 +85,7 @@ class Player(pygame.sprite.Sprite):
         
         if self.attacking:
             self.direction.x = 0
-            self.direction.y =0
+            self.direction.y = 0
             if not "attack" in self.status:
                 if "idle" in self.status:
                     self.status.replace("_idle","+ _attack")
@@ -92,6 +94,20 @@ class Player(pygame.sprite.Sprite):
         else:
             if "attack" in self.status:
                 self.status = self.status.replace("_attack","")
+
+    
+    #animates character by looping through folder animations
+    def animate(self):
+        animation = self.animations[self.status]
+        self.frame_index += self.animation_speed
+
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center = self.hitbox.center)
+
+
 
 
 
@@ -129,5 +145,6 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.cooldowns()
         self.get_status()
+        self.animate()
         self.move(self.speed)
         
