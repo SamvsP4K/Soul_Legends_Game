@@ -1,16 +1,21 @@
 import pygame, sys
-from settings import *
+#from settings import *
 from level import Level
 import os
 #sets the working directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+#pygame display settings
+WIDTH    = 1280	
+HEIGTH   = 720
+FPS      = 60
+TILESIZE = 64
 
 #from debug import debug
 class Game:
 	def __init__(self):
 		  
-		# general setup
+		# general pygame setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
 		pygame.display.set_caption('Soul Legends')

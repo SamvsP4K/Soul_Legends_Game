@@ -13,6 +13,9 @@ class Player(pygame.sprite.Sprite):
         #player movement and obstacle collision
         self.direction = pygame.math.Vector2()
         self.speed = 5
+        self.attacking = False
+        self.attack_cooldown = 400
+        self.attack_time = None
         
         self.obstacle_sprite = obstacle_sprites
 
@@ -33,6 +36,22 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
+
+        #attack input
+        if keys[pygame.K_SPACE] and not self.attacking:
+            self.attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            print("attack")
+        #magic input
+        if keys[pygame.K_r] and not self.attacking:
+            self.attacking = True
+            print("magic")
+
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+        if self.attacking:
+            if current_time - self.attack_time >= self.attack_cooldown:
+                self.attacking = False
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
@@ -65,3 +84,4 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.input()
         self.move(self.speed)
+        self.cooldowns()
