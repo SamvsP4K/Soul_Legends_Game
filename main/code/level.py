@@ -3,6 +3,8 @@ from settings import *
 from tile import Tile
 from player import Player
 from support import *
+from random import choice
+
 
 PLAYER_STARTING__POS_X = 1975
 PLAYER_STARTING_POS_Y = 1430
@@ -20,8 +22,16 @@ class Level:
     #drawing objects to world map
     def create_map(self):
         layout ={
-            "boundary":import_csv_layout("map/map_FloorBlocks.csv")
+            "boundary":import_csv_layout("map/map_FloorBlocks.csv"),
+            "grass":import_csv_layout("map/map_Grass.csv"),
+            "object":import_csv_layout("map/map_LargeObjects.csv")
         }
+
+        graphics = {
+            "grass": import_folder("graphics/grass"),
+            "object": import_folder("graphics/objects")
+        }
+
         
         for style, layout in layout.items():
             for row_index,row in enumerate(layout):
@@ -29,8 +39,18 @@ class Level:
                     if col != "-1":
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
+                        #creates map invisible boundary
                         if style == "boundary":
-                            Tile((x,y),[self.visible_sprits, self.obstacle_sprits] ,"invisible")
+                            Tile((x,y),[self.obstacle_sprits] ,"invisible")
+                        #creates grass tiles
+                        if style == "grass":
+                            random_grass_image = choice(graphics['grass'])
+                            Tile((x,y),[self.visible_sprits,self.obstacle_sprits],"grass", random_grass_image)
+                        #creates object tiles
+                        if style == "object":
+                            surf = graphics["object"][int(col)]
+                            Tile((x,y),[self.visible_sprits,self.obstacle_sprits],"object", surf)
+
                     #if col == "x":
                     #    Tile((x,y),[self.visible_sprits,self.obstacle_sprits])
                     #if col == "p":
