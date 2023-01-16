@@ -4,7 +4,7 @@ from tile import Tile
 from player import Player
 from support import *
 from random import choice
-
+from weapon import Weapon
 
 PLAYER_STARTING__POS_X = 1975
 PLAYER_STARTING_POS_Y = 1430
@@ -51,8 +51,10 @@ class Level:
                             surf = graphics["object"][int(col)]
                             Tile((x,y),[self.visible_sprits,self.obstacle_sprits],"object", surf)
 
-            self.player = Player((PLAYER_STARTING__POS_X,PLAYER_STARTING_POS_Y),[self.visible_sprits], self.obstacle_sprits)
+            self.player = Player((PLAYER_STARTING__POS_X,PLAYER_STARTING_POS_Y),[self.visible_sprits], self.obstacle_sprits,self.create_attack)
 
+    def create_attack(self):
+        Weapon(self.player,[self.visible_sprits])
 
     def run(self):
         #update and draw game
